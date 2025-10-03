@@ -7,11 +7,14 @@ public class No<T> {
     // Outro elemento ou filho (nó) à direita de um determinado nó (maior).
     private No<T> filhoRight;
 
+    private No<T> pai;
+
 
     public No(T v) {
         this.valor = v;
         this.filhoRight = null;
         this.filhoLeft = null;
+        this.pai = null;
     }
 
     // Funcao que retorna o valor deste no.
@@ -38,4 +41,7 @@ public class No<T> {
     public void setFilhoRight(No<T> fright) {
         this.filhoRight = fright;
     }
+
+    public No<T> getPai() {return this.pai;}
+    public void setPai(No<T> pai) {this.pai = pai;}
 }

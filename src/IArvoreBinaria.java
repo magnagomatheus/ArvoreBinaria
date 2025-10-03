@@ -20,7 +20,7 @@ public interface IArvoreBinaria<T> {
      * @param novoValor - Elemento do Tipo T a ser armazenado na árvore.
      *
      */
-    public void adicionar(T novoValor);
+    public No<T> adicionar(T novoValor);
 
 
     /**
