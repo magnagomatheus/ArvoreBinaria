@@ -6,10 +6,9 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
     protected Comparator<T> comparador;
 
     @Override
-    public boolean adicionar(T novoValor, No<T> currentNo, char lado) {
-        // Criacao de um novo nó com o valor do novo elemento
+    public boolean adicionar(T novoValor) {
+
         No<T> novoElemento = new No<T>(novoValor);
-        No<T> aux = null;
         // Verifica se a arvore esta vazia
         if (this.raiz == null) {
             // O novo elemento se torna a raiz da arvore.
@@ -17,7 +16,33 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
             return true;
         }
 
-        if(currentNo == null) {
+        return adicionar(novoElemento, this.raiz);
+    }
+
+    @Override
+    public boolean adicionar(No<T> novoElemento, No<T> currentNo) {
+        // Criacao de um novo nó com o valor do novo elemento
+        //No<T> novoElemento = new No<T>(novoValor);
+        int cmp = comparador.compare(currentNo.getValor(), novoElemento.getValor());
+        if (cmp > 0) {
+            if(currentNo.getFilhoLeft() == null) {
+                currentNo.setFilhoLeft(novoElemento);
+                return true;
+            }
+            adicionar(novoElemento, currentNo.getFilhoLeft());
+        } else {
+            if(currentNo.getFilhoRight() == null) {
+                currentNo.setFilhoRight(novoElemento);
+                return true;
+            }
+            adicionar(novoElemento, currentNo.getFilhoRight());
+        }
+
+        return false;
+
+        //No<T> aux = null;
+
+        /*if(currentNo == null) {
             aux = currentNo.getPai();
             if(lado == 'l'){
                 aux.setFilhoLeft(novoElemento);
@@ -28,16 +53,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
                 novoElemento.setPai(aux);
             }
             return true;
-        }
-
-        int cmp = comparador.compare(currentNo.getValor(), novoElemento.getValor());
-        if (cmp > 0) {
-            adicionar(novoValor, currentNo.getFilhoLeft(), 'l');
-        } else {
-            adicionar(novoValor, currentNo.getFilhoRight(), 'r');
-        }
-
-        return false;
+        }*/
 
     }
 
