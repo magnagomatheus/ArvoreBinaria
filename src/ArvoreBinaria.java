@@ -160,6 +160,43 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
 
     }
 
+    public T removerterts(T valor) {
+        // buscando o nó que vai ser removido
+        No<T> aRemover = pesquisar(valor);
+
+        if(aRemover == null) {
+            System.out.println("Não foi possível remover esse elemento!");
+        }
+        // verifica se ele tem filhos a esquerda para substituir ele no pai. Se não houver o filho a direita fará isso
+        if (aRemover.getFilhoLeft() == null) {
+            if (this.comparador.compare(aRemover.getValor(),aRemover.getPai().getFilhoLeft().getValor() ) == 0) {
+                aRemover.getPai().setFilhoLeft(aRemover.getFilhoRight());
+                return aRemover.getValor();
+            }
+            aRemover.getPai().setFilhoRight(aRemover.getFilhoRight());
+            return aRemover.getValor();
+        }
+        if (this.comparador.compare(aRemover.getValor(),aRemover.getPai().getFilhoLeft().getValor()) == 0){
+            aRemover.getPai().setFilhoLeft(rremoverterts(aRemover.getFilhoLeft(),valor));
+            return aRemover.getValor();
+        }
+        aRemover.getPai().setFilhoRight(rremoverterts(aRemover.getFilhoLeft(), valor));
+        return aRemover.getValor();
+    }
+
+    private No<T> rremoverterts( No<T> noAtual, T valor){
+        if (noAtual.getFilhoRight() == null) {
+            if(noAtual.getPai().getValor()== valor) {
+                return noAtual;
+            }
+            noAtual.getPai().setFilhoRight(noAtual.getFilhoLeft());
+            return noAtual;
+        }
+        return rremoverterts(noAtual.getFilhoRight(), valor);
+
+    }
+
+
     @Override
     public int altura() {
         return 0;
