@@ -166,6 +166,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
 
         if(aRemover == null) {
             System.out.println("Não foi possível remover esse elemento!");
+            return null;
         }
         // verifica se ele tem filhos a esquerda para substituir ele no pai. Se não houver o filho a direita fará isso
         if (aRemover.getFilhoLeft() == null) {
