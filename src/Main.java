@@ -13,10 +13,11 @@ public static void main(String[] args) {
     arvore.adicionar(60);
     arvore.adicionar(80);
     arvore.adicionar(80);
-    arvore.remover(80);
+    arvore.adicionar(90);
 
     arvore.printArvore();
 
     System.out.println("NÓS:");
     System.out.println(arvore.quantidadeNos());
+    System.out.println(arvore.altura());
 }

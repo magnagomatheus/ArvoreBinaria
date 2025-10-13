@@ -234,8 +234,24 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
 
     @Override
     public int altura() {
-        return 0;
+        return calcularAltura(this.raiz);
     }
+
+    private int calcularAltura(No<T> no){
+        if (no == null) {
+            return 0;
+        }
+
+        int alturaEsquerda = calcularAltura(no.getFilhoLeft());
+        int alturaDireita = calcularAltura(no.getFilhoRight());
+
+        if (alturaEsquerda > alturaDireita) {
+            return 1 + alturaEsquerda;
+        } else {
+            return 1 + alturaDireita;
+        }
+    }
+
 
     @Override
     public int quantidadeNos() {
