@@ -30,7 +30,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
                 currentNo.setFilhoRight(novoElemento);
                 return true;
             }
-            adicionar(novoElemento, currentNo.getFilhoRight());
+            return adicionar(novoElemento, currentNo.getFilhoRight());
         }
         // Verifica se o valor novo elemento eh MENOR do que o valor do elemento atual da arvore
         else if(cmp < 0) {
@@ -38,12 +38,12 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
                 currentNo.setFilhoLeft(novoElemento);
                 return true;
             }
-            adicionar(novoElemento, currentNo.getFilhoLeft());
+            return adicionar(novoElemento, currentNo.getFilhoLeft());
         } else {
-            currentNo.setFilhoRight(novoElemento);
-            return true;
+            // problema isso aqui mesmo, pq depois pra balancear não da certo
+            return false;
         }
-        return false;
+
     }
 
     @Override
@@ -100,7 +100,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
 
         // Verifica se a lista está vazia ou se chegou ao final da arvore e o elemento nao foi encontrado.
         if (noAtual == null) {
-            System.out.println("Não há nenhum elemento na arvore.");
+            System.out.println("Elemento não encontrado.");
             return null;
         }
 
@@ -239,7 +239,14 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
 
     @Override
     public int quantidadeNos() {
-        return 0;
+        return nodeCounter(this.raiz);
+    }
+
+    private int nodeCounter(No<T> no){
+        if(no == null){
+            return 0;
+        }
+        return 1 + nodeCounter(no.getFilhoLeft()) + nodeCounter(no.getFilhoRight());
     }
 
     @Override
@@ -250,5 +257,25 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
     @Override
     public String caminharEmOrdem() {
         return "";
+    }
+
+
+    public void printArvore() {
+        printArvore(this.raiz, 0);
+    }
+
+    private void printArvore(No<T> no, int nivel) {
+        if (no != null) {
+            printArvore(no.getFilhoRight(), nivel + 1);
+
+            // Imprime espaços para indentação
+            for (int i = 0; i < nivel; i++) {
+                System.out.print("    ");
+            }
+
+            System.out.println(no.getValor());
+
+            printArvore(no.getFilhoLeft(), nivel + 1);
+        }
     }
 }
