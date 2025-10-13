@@ -61,7 +61,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
     public T pesquisar(T valor, Comparator comparador, No<T> noAtual) {
 
 
-        if(noAtual.getValor() == null) {
+        if(noAtual == null) {
             System.out.println("Elemento " + valor + " não encontrado.");
             return null;
         }
@@ -85,33 +85,50 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
     @Override
     public T remover(T valor) {
 
-        if (this.raiz == null) {
+        // Chame a funcao recursiva para remover o elemento.
+        return remover(valor, this.raiz);
+    }
+
+
+    private T remover(T valor, No<T> noAtual) {
+        // Funcao recursiva, cuja logica seguida eh o Sucessor In-Order
+        // Ao inves de atribuir os nos novamente e pontar filho por filho,
+        // Apenas substituimos o No a ser removido pelo Sucessor In-Order, que
+        // Se o Elemento a ser removido estiver a esquerda, o Sucessor In-Order sera o elemento mais a direita do ramo.
+        // Se o Elemento a ser removido estiver a direita ou for a raiz, o Sucessor In-Order sera o elemento mais a esquerda do ramo.
+
+
+        // Verifica se a lista está vazia ou se chegou ao final da arvore e o elemento nao foi encontrado.
+        if (noAtual == null) {
             System.out.println("Não há nenhum elemento na arvore.");
             return null;
         }
 
-        return remover(valor, this.raiz);
-    }
 
-    private T remover(T valor, No<T> noAtual) {
 
-        if(noAtual.getValor() == null) {
-            System.out.println("Elemento não existe na arvore.");
-            return null;
-        }
-
+        // Primeiro faremos a busca pelo elemento a ser removido.
+        // Comparacao entre o valor do novo elemento e o valor do elemento atual da arvore.
         int cmp = comparador.compare(valor, noAtual.getValor());
 
+        // Se o novo elemento for MAIOR que o elemento atual da arvore, entao va para o proximo filho a direita
         if(cmp > 0) {
             return remover(valor, noAtual.getFilhoRight());
-        } else if (cmp < 0) {
+        }
+        // Se o novo elemento for MENOR que o elemento atual da arvore, entao va para o proximo filho a esquerda
+        else if(cmp < 0) {
             return remover(valor, noAtual.getFilhoLeft());
-        } else {
-
+        }
+        // Se forem iguais, encontrou o elemento a ser removido.
+        else {
+            // Criacao da copia do Sucessor In-Order, que substituira o lugar do elemento a ser removido.
+            No<T> sucessorInOrder = null;
+            // Criacao do No que contera o No pai (elemento anterior) do elemento a ser removido.
             No<T> elemAnterior = noAtual.getPai();
-
-            // Verifica se o No Atual eh filho esquerdo ou direito do No anterior
+            // Criacao da variavel lado para identificar se o elemento a ser removido eh filho direito ou esquerdo do elemento anterior (pai).
             char lado;
+            // Compara se o filho esquerdo do elemento anterior eh igual ao elemento a ser removido,
+            // Se for, entao ele eh filho esquerdo,
+            // Se nao, ele eh filho direito.
             cmp = comparador.compare(elemAnterior.getFilhoLeft().getValor(), noAtual.getValor());
             if(cmp == 0) {
                 lado = 'l';
@@ -119,83 +136,100 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
                 lado = 'r';
             }
 
-            // Verifica se o No Atual não possui filhos.
-            if(noAtual.getFilhoLeft() == null && noAtual.getFilhoRight() == null) {
+            // VERIFICACAO DE QUAL LADO DA ARVORE ESTAMOS.
+            // Variavel que armazena em qual lado da arvore (ramificacao) estamos.
+            char ladoArvore;
+            // Comparacao entre o elemento a ser removido e o elemento raiz da arvore.
+            int cmpLado = comparador.compare(noAtual.getValor(), this.raiz.getValor());
+            // Se o elemento a ser removido for MAIOR que o elemento raiz da arvore, estamos no lado direito da ramificacao.
+            // Se o elemento a ser removido for MENOR que o elemento raiz da arvore, estamos no lado esquerdo da ramificacao.
+            if(cmpLado > 0) {
+                ladoArvore = 'r';
+            }
+            else {
+                ladoArvore = 'l';
+            }
+
+
+            // Verifica se o elemento a ser removido eh um candidato a Sucessor In-Order (Se nao tem filhos)
+            if(noAtual.getFilhoLeft() == null || noAtual.getFilhoRight() == null) {
+                // Se nao tiver, apenas remova o elemento a ser removido.
                 if(lado == 'l') {
                     elemAnterior.setFilhoLeft(null);
                 } else {
                     elemAnterior.setFilhoRight(null);
                 }
-            } else {
-                if(noAtual.getFilhoLeft() != null && noAtual.getFilhoRight() != null) {
-                    if(lado == 'l') {
-                        elemAnterior.setFilhoLeft(noAtual.getFilhoRight());
-                        noAtual.getFilhoRight().setFilhoLeft(noAtual.getFilhoLeft());
-                    } else {
-                        elemAnterior.setFilhoRight(noAtual.getFilhoRight());
-                        noAtual.getFilhoRight().setFilhoLeft(noAtual.getFilhoLeft());
-                    }
-                }
-                if(noAtual.getFilhoLeft() == null) {
-                    elemAnterior.setFilhoLeft(null);
-                } else {
-                    elemAnterior.setFilhoLeft(noAtual.getFilhoLeft());
-                }
-                if(noAtual.getFilhoRight() == null) {
-                    elemAnterior.setFilhoRight(null);
-                } else {
-                    elemAnterior.setFilhoRight(noAtual.getFilhoRight());
-                }
+
+                System.out.println("Elemento removido com sucesso!");
+                return noAtual.getValor();
+            }
+            // Atribuicao do No SucessorInOrder que sera colocado no lugar do No a ser removido
+            sucessorInOrder = encontraSucessorInOrder(noAtual, ladoArvore);
 
 
+            // Se o elemento a ser removido for filho a esquerda do elemento anterior a ele
+            // O novo filho a esquerda do elemento anterior passa a ser o sucessorInOrder
+            if(lado == 'l') {
+                // Remova o elemento a ser removido e coloque o sucessorInOrder no lugar.
+                elemAnterior.setFilhoLeft(sucessorInOrder);
+            }
+            // O novo filho a direita do elemento anterior passa a ser o sucessorInOrder
+            else {
+                // Remova o elemento a ser removido e coloque o sucessorInOrder no lugar.
+                elemAnterior.setFilhoRight(sucessorInOrder);
             }
 
+            // Criacao dos nos que contem os filhos do elemento a ser removido.
+            No<T> filhoEsquerdo = noAtual.getFilhoLeft();
+            No<T> filhoDireito = noAtual.getFilhoRight();
+            // Se o filho esquerdo for diferente de null, atribua o Sucessor In-Order como o novo pai.
+            if(filhoEsquerdo.getValor() != null) {
+                filhoEsquerdo.setPai(sucessorInOrder);
+            }
+            // Se o filho direito for diferente de null, atribua o Sucessor In-Order como o novo pai.
+            if(filhoDireito.getValor() != null) {
+                filhoDireito.setPai(sucessorInOrder);
+            }
 
-
-
-
-            System.out.println("Elemento " + noAtual.getValor() + "removido com sucesso!");
+            System.out.println("Elemento removido com sucesso!");
             return noAtual.getValor();
-        }
 
+        }
     }
 
-    public T removerterts(T valor) {
-        // buscando o nó que vai ser removido
-        No<T> aRemover = pesquisar(valor);
+    private No<T> encontraSucessorInOrder(No<T> elementoAtual, char ladoArvore) {
 
-        if(aRemover == null) {
-            System.out.println("Não foi possível remover esse elemento!");
-            return null;
-        }
-        // verifica se ele tem filhos a esquerda para substituir ele no pai. Se não houver o filho a direita fará isso
-        if (aRemover.getFilhoLeft() == null) {
-            if (this.comparador.compare(aRemover.getValor(),aRemover.getPai().getFilhoLeft().getValor() ) == 0) {
-                aRemover.getPai().setFilhoLeft(aRemover.getFilhoRight());
-                return aRemover.getValor();
+        // Se estivermos no lado Esquerdo da arvore, o elemento Sucessor In-Order sera o filho mais a direita deste lado.
+        // Portanto, percorra esta ramificacao ate encontrar o filho mais a direita deste lado (next Filho Right == null)
+        if(ladoArvore == 'l') {
+            // Se elementoAtual.getFilhoRight() == null, encontrou o Sucessor In-Order
+            if(elementoAtual.getFilhoRight() == null) {
+                // Remova este No do lugar original onde estava para coloca-lo no lugar do elemento a ser removido
+                elementoAtual.getPai().setFilhoRight(null);
+                // Retorne o elemento
+                return elementoAtual;
             }
-            aRemover.getPai().setFilhoRight(aRemover.getFilhoRight());
-            return aRemover.getValor();
+            // Caso nao tenha encontrado, percorra recursivamente.
+            return encontraSucessorInOrder(elementoAtual.getFilhoRight(), ladoArvore);
         }
-        if (this.comparador.compare(aRemover.getValor(),aRemover.getPai().getFilhoLeft().getValor()) == 0){
-            aRemover.getPai().setFilhoLeft(rremoverterts(aRemover.getFilhoLeft(),valor));
-            return aRemover.getValor();
-        }
-        aRemover.getPai().setFilhoRight(rremoverterts(aRemover.getFilhoLeft(), valor));
-        return aRemover.getValor();
-    }
+        // Se estivermos no lado Direito da arvore, o elemento Sucessor In-Order sera o filho mais a esquerda deste lado.
+        // Portanto, percorra esta ramificacao ate encontrar o filho mais a esquerdad deste lado (next Filho Left == null)
+        else {
+            // Se elementoAtual.getFilhoLeft() == null, encontrou o Sucessor In-Order
+            if(elementoAtual.getFilhoLeft() == null) {
+                // Remova este No do lugar original onde estava para coloca-lo no lugar do elemento a ser removido
+                elementoAtual.getPai().setFilhoLeft(null);
 
-    private No<T> rremoverterts( No<T> noAtual, T valor){
-        if (noAtual.getFilhoRight() == null) {
-            if(noAtual.getPai().getValor()== valor) {
-                return noAtual;
+                // Retorne o elemento
+                return elementoAtual;
             }
-            noAtual.getPai().setFilhoRight(noAtual.getFilhoLeft());
-            return noAtual;
+            // Caso nao tenha encontrado, percorra recursivamente.
+            return encontraSucessorInOrder(elementoAtual.getFilhoLeft(), ladoArvore);
         }
-        return rremoverterts(noAtual.getFilhoRight(), valor);
 
     }
+
+
 
 
     @Override
