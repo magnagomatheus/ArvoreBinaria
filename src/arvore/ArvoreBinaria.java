@@ -1,9 +1,16 @@
+package arvore;
+
 import java.util.Comparator;
 
-public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
+public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
-    protected No<T> raiz = null;
+    protected No<T> raiz;
     protected Comparator<T> comparador;
+
+    public ArvoreBinaria(Comparator<T> comparador){
+        this.raiz =null;
+        this.comparador = comparador;
+    }
 
     @Override
     public boolean adicionar(T novoValor) {
@@ -22,7 +29,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
     @Override
     public boolean adicionar(No<T> novoElemento, No<T> currentNo) {
         // Criacao de um novo nó com o valor do novo elemento
-        //No<T> novoElemento = new No<T>(novoValor);
+        //arvore.No<T> novoElemento = new arvore.No<T>(novoValor);
         int cmp = comparador.compare(novoElemento.getValor(), currentNo.getValor());
         // Verifica se o valor novo elemento eh MAIOR do que o valor do elemento atual da arvore
         if (cmp > 0) {
@@ -71,7 +78,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
 
         // Se o novo elemento for maior que o elemento da Arvore
         if(cmp > 0) {
-            // Entao va para o proximo No andando para a direita da arvore (filho direito daquele no)
+            // Entao va para o proximo arvore.No andando para a direita da arvore (filho direito daquele no)
             return pesquisar(valor, comparador, noAtual.getFilhoRight());
         } else if(cmp < 0) {
             return pesquisar(valor, comparador, noAtual.getFilhoLeft());
@@ -93,7 +100,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
     private T remover(T valor, No<T> noAtual) {
         // Funcao recursiva, cuja logica seguida eh o Sucessor In-Order
         // Ao inves de atribuir os nos novamente e pontar filho por filho,
-        // Apenas substituimos o No a ser removido pelo Sucessor In-Order, que
+        // Apenas substituimos o arvore.No a ser removido pelo Sucessor In-Order, que
         // Se o Elemento a ser removido estiver a esquerda, o Sucessor In-Order sera o elemento mais a direita do ramo.
         // Se o Elemento a ser removido estiver a direita ou for a raiz, o Sucessor In-Order sera o elemento mais a esquerda do ramo.
 
@@ -122,7 +129,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
         else {
             // Criacao da copia do Sucessor In-Order, que substituira o lugar do elemento a ser removido.
             No<T> sucessorInOrder = null;
-            // Criacao do No que contera o No pai (elemento anterior) do elemento a ser removido.
+            // Criacao do arvore.No que contera o arvore.No pai (elemento anterior) do elemento a ser removido.
             No<T> elemAnterior = noAtual.getPai();
             // Criacao da variavel lado para identificar se o elemento a ser removido eh filho direito ou esquerdo do elemento anterior (pai).
             char lado;
@@ -163,7 +170,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
                 System.out.println("Elemento removido com sucesso!");
                 return noAtual.getValor();
             }
-            // Atribuicao do No SucessorInOrder que sera colocado no lugar do No a ser removido
+            // Atribuicao do arvore.No SucessorInOrder que sera colocado no lugar do arvore.No a ser removido
             sucessorInOrder = encontraSucessorInOrder(noAtual, ladoArvore);
 
 
@@ -204,7 +211,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
         if(ladoArvore == 'l') {
             // Se elementoAtual.getFilhoRight() == null, encontrou o Sucessor In-Order
             if(elementoAtual.getFilhoRight() == null) {
-                // Remova este No do lugar original onde estava para coloca-lo no lugar do elemento a ser removido
+                // Remova este arvore.No do lugar original onde estava para coloca-lo no lugar do elemento a ser removido
                 elementoAtual.getPai().setFilhoRight(null);
                 // Retorne o elemento
                 return elementoAtual;
@@ -217,7 +224,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
         else {
             // Se elementoAtual.getFilhoLeft() == null, encontrou o Sucessor In-Order
             if(elementoAtual.getFilhoLeft() == null) {
-                // Remova este No do lugar original onde estava para coloca-lo no lugar do elemento a ser removido
+                // Remova este arvore.No do lugar original onde estava para coloca-lo no lugar do elemento a ser removido
                 elementoAtual.getPai().setFilhoLeft(null);
 
                 // Retorne o elemento
