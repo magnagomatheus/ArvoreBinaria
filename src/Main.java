@@ -40,7 +40,7 @@ public class Main {
                 double nota = s.nextDouble();
                 // S.NEXTLINE() PARA CONSUMIR O \n
                 s.nextLine();
-                arvore.adicionar(new Aluno(matricula,nome, nota));
+                arvore.adicionar(new Aluno(matricula,nome));
 
             } else if (opcao == 2) {
                 System.out.println("Pesquisar elemento na Árvore");
@@ -48,19 +48,19 @@ public class Main {
                 String nome = s.nextLine().trim();
                 // S.NEXTLINE() PARA CONSUMIR O \n
 
-                System.out.println(arvore.pesquisar(new Aluno(11,nome,11)));
+                System.out.println(arvore.pesquisar(new Aluno(11,nome)));
 
             }else if (opcao == 3) {
                 System.out.println("Pesquisar elemento na Árvore com forma alternativa");
                 int valor = s.nextInt();
                 s.nextLine();
-                System.out.println(arvore.pesquisar(new Aluno(valor,null,11)));
+                System.out.println(arvore.pesquisar(new Aluno(valor,null)));
 
 
             }else if (opcao == 4) {
                 System.out.println("Remover elemento da Árvore");
                 String valor = s.nextLine().trim();
-                arvore.remover(new Aluno(1, valor, 11));
+                arvore.remover(new Aluno(1, valor));
 
             }else if (opcao == 5) {
                 System.out.println("Caminhar pela Árvore em ordem");

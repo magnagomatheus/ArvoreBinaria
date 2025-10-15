@@ -1,14 +1,14 @@
 package arvore;
 
-public class Aluno implements Comparable<Aluno>{
+public class Aluno implements Comparable<Aluno> {
     private int matricula;
     private String nome;
-    private double nota;
+    // double nota;
 
-    public Aluno (int m, String n, double no){
+    public Aluno (int m, String n){
         this.matricula = m;
         this.nome = n;
-        this.nota = no;
+        //this.nota = nota;
     }
     @Override
     public String toString() {

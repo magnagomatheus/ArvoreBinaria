@@ -12,9 +12,10 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         this.comparador = comparador;
     }
 
+    // Função Adicionar --> Adiciona um novo elemento de tipo T, ou seja, aceita qualquer tipo de valor na árvore binária.
     @Override
     public boolean adicionar(T novoValor) {
-
+        // Criação do Nó (estrutura) que conterá o novo valor a ser adicionado na árvore.
         No<T> novoElemento = new No<T>(novoValor);
         // Verifica se a arvore esta vazia
         if (this.raiz == null) {
@@ -22,52 +23,109 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
             this.raiz = novoElemento;
             return true;
         }
-
-        return adicionar(novoElemento, this.raiz);
+        // Caso não esteja, chame a função adicionar recursiva, que percorre a árvore até encontrar o lugar ideal para o novo valor.
+        adicionar(novoElemento, this.raiz);
+        return true;
     }
 
+
+
+
+    // Função Adicionar (Recursiva) --> Percorre toda a árvore comparando cada nó com o novo valor, com o objetivo de encontrar o lugar ideal para adição do novo elemento.
     @Override
     public boolean adicionar(No<T> novoElemento, No<T> currentNo) {
-        // Criacao de um novo nó com o valor do novo elemento
-        //arvore.No<T> novoElemento = new arvore.No<T>(novoValor);
+        // Comparação entre o valor do novo elemento e o valor do elemento atual da lista.
         int cmp = comparador.compare(novoElemento.getValor(), currentNo.getValor());
         // Verifica se o valor novo elemento eh MAIOR do que o valor do elemento atual da arvore
         if (cmp > 0) {
+            // Se for maior, verifica se o elemento atual possui um filho a direita, ou seja, se o elemento atual a arvore tem algum nó com valor maior do que ele próprio.
             if(currentNo.getFilhoRight() == null) {
+                // Caso não tenha um próximo nó, o novo elemento se torna este próximo, se torna filho do nó atual da àrvore.
                 currentNo.setFilhoRight(novoElemento);
+                // return true (deu certo)
+                System.out.println("Elemento adicionado com sucesso!");
                 return true;
             }
-            return adicionar(novoElemento, currentNo.getFilhoRight());
+            // Caso tenha um próximo elemento de valor maior, passe para o próximo nó chamando a própria função recursivamente, atualizando apenas o currentNo.
+            adicionar(novoElemento, currentNo.getFilhoRight());
         }
         // Verifica se o valor novo elemento eh MENOR do que o valor do elemento atual da arvore
         else if(cmp < 0) {
+            // Se for menor, verifica se o nó atual possui um filho a esquerda, ou seja, um elemento menor do que ele próprio
             if(currentNo.getFilhoLeft() == null) {
+                // Se não tiver um elemento menor que o nó atual na lista, o novo elemento se torna filho a esquerda do nó atual.
                 currentNo.setFilhoLeft(novoElemento);
+                // return true (elemento adicionado)
+                System.out.println("Elemento adicionado com sucesso!");
                 return true;
             }
-            return adicionar(novoElemento, currentNo.getFilhoLeft());
-        } else {
-            // problema isso aqui mesmo, pq depois pra balancear não da certo
-            return false;
+            // Caso tenha um próximo elemento menor que o nó atual (filho a esquerda), chame o método adicionar recursivamente atualizando o parametro currentNo.
+            adicionar(novoElemento, currentNo.getFilhoLeft());
         }
-
+        // Caso o novo elemento e o Nó atual forem iguais
+        else {
+            // O novo elemento se torna filho a direito do nó atual da árvore
+            currentNo.setFilhoRight(novoElemento);
+            System.out.println("Elemento adicionado com sucesso!");
+            return true;
+        }
+        // retorna false (nao foi possível adicionar)
+        System.out.println("Não foi possível adicionar o elemento: " + novoElemento.getValor());
+        return false;
     }
 
+
+
+
+    // Método pesquisar --> Recebe como parâmetro um valor do tipo T, ou seja, genérico e pode ser qualquer valor. Após isso, ele busca este elemento na árvore comparando nó a nó.
     @Override
     public T pesquisar(T valor) {
-
+        // Verifica se a lista esta vazia
         if(this.raiz == null) {
             System.out.println("Não há nenhum elemento na lista.");
             return null;
         }
-
-        return pesquisar(valor, this.comparador, this.raiz);
+        // Caso não esteja, chame a função pesquisar que efetuará a busca recursivamente.
+        return pesquisar(valor, this.raiz);
     }
 
+
+
+
+    // Função pesquisar private --> Pesquisa o elemento recursivamente com o comparador da própria instancia da classe.
+    private T pesquisar(T valor, No<T> noAtual) {
+
+        // Verifica se a lista está vazia
+        if(noAtual == null) {
+            System.out.println("Elemento " + valor + " não encontrado.");
+            return null;
+        }
+
+        // Comparacao entre o elemento do no atual da arvore e o novo elemento
+        int cmp = this.comparador.compare(valor, noAtual.getValor());
+
+        // Se o novo elemento for maior que o elemento da Arvore
+        if(cmp > 0) {
+            // Entao va para o proximo arvore.No andando para a direita da arvore (filho direito daquele no)
+            return pesquisar(valor, noAtual.getFilhoRight());
+        }
+        // Se o novo elemento for MENOR que o elemento da Àrvore
+        else if(cmp < 0) {
+            // Chame a própria função novamente atualizando o valor do elemento atual (passa para o próximo nó a esquerda)
+            return pesquisar(valor, noAtual.getFilhoLeft());
+        }
+        // Se forem iguais, retorne o próprio elemento pois ele foi encontrado.
+        else {
+            System.out.println("Elemento " + noAtual.getValor() +" encontrado!");
+            return noAtual.getValor();
+        }
+    }
+
+
+    // Função pesquisar com comparador como argumento --> Pesquisa o elemento recursivamente com o comparador da escolha do usuário, e não necessáriamente da instância da classe.
     @Override
     public T pesquisar(T valor, Comparator comparador, No<T> noAtual) {
-
-
+        // Verifica se chegou ao fim da lista.
         if(noAtual == null) {
             System.out.println("Elemento " + valor + " não encontrado.");
             return null;
@@ -79,22 +137,35 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         // Se o novo elemento for maior que o elemento da Arvore
         if(cmp > 0) {
             // Entao va para o proximo arvore.No andando para a direita da arvore (filho direito daquele no)
-            return pesquisar(valor, comparador, noAtual.getFilhoRight());
-        } else if(cmp < 0) {
-            return pesquisar(valor, comparador, noAtual.getFilhoLeft());
-        } else {
+            return pesquisar(valor, noAtual.getFilhoRight());
+        }
+        // Se o novo elemento for MENOR que o elemento da Àrvore
+        else if(cmp < 0) {
+            // Chame a própria função novamente atualizando o valor do elemento atual (passa para o próximo nó a esquerda)
+            return pesquisar(valor, noAtual.getFilhoLeft());
+        }
+        // Se forem iguais, retorne o próprio elemento pois ele foi encontrado.
+        else {
             System.out.println("Elemento " + noAtual.getValor() +" encontrado!");
             return noAtual.getValor();
         }
 
     }
 
+
+    // Método público remover --> Chama a função recursiva que efetuará a busca recursivamente, remoção e modificações de maneira recursiva.
     @Override
     public T remover(T valor) {
-
         // Chame a funcao recursiva para remover o elemento.
         return remover(valor, this.raiz);
     }
+
+
+
+
+    // Método remover private --> De maneira recursiva, busca o elemento a ser removido,
+    //  busca o sucessor In-Order (elemento mais a direita do ramo esquerdo ou o elemento mais a esquerda do ramo direito da árvore)
+    //  e efetua a remoção do elemento a ser removido e a adição do sucessor In-Order no exato lugar do no a ser removido.
 
 
     private T remover(T valor, No<T> noAtual) {
@@ -107,15 +178,14 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
         // Verifica se a lista está vazia ou se chegou ao final da arvore e o elemento nao foi encontrado.
         if (noAtual == null) {
-            System.out.println("Elemento não encontrado.");
+            System.out.println("Não há nenhum elemento na arvore.");
             return null;
         }
-
-
 
         // Primeiro faremos a busca pelo elemento a ser removido.
         // Comparacao entre o valor do novo elemento e o valor do elemento atual da arvore.
         int cmp = comparador.compare(valor, noAtual.getValor());
+
 
         // Se o novo elemento for MAIOR que o elemento atual da arvore, entao va para o proximo filho a direita
         if(cmp > 0) {
@@ -157,7 +227,6 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
                 ladoArvore = 'l';
             }
 
-
             // Verifica se o elemento a ser removido eh um candidato a Sucessor In-Order (Se nao tem filhos)
             if(noAtual.getFilhoLeft() == null || noAtual.getFilhoRight() == null) {
                 // Se nao tiver, apenas remova o elemento a ser removido.
@@ -167,12 +236,12 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
                     elemAnterior.setFilhoRight(null);
                 }
 
+
                 System.out.println("Elemento removido com sucesso!");
                 return noAtual.getValor();
             }
             // Atribuicao do arvore.No SucessorInOrder que sera colocado no lugar do arvore.No a ser removido
             sucessorInOrder = encontraSucessorInOrder(noAtual, ladoArvore);
-
 
             // Se o elemento a ser removido for filho a esquerda do elemento anterior a ele
             // O novo filho a esquerda do elemento anterior passa a ser o sucessorInOrder
@@ -198,14 +267,18 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
                 filhoDireito.setPai(sucessorInOrder);
             }
 
+            // Retorna o valor do Elemento que foi removido.
             System.out.println("Elemento removido com sucesso!");
             return noAtual.getValor();
-
         }
     }
 
-    private No<T> encontraSucessorInOrder(No<T> elementoAtual, char ladoArvore) {
 
+    // Função encontraSucessorInOrder --> Recebe o elemento a ser removido e o lado em que o mesmo está na arvore, e encontra, dependendo do ramo,
+    // o elemento mais a direita ou esquerda daquele ramo.
+
+
+    private No<T> encontraSucessorInOrder(No<T> elementoAtual, char ladoArvore) {
         // Se estivermos no lado Esquerdo da arvore, o elemento Sucessor In-Order sera o filho mais a direita deste lado.
         // Portanto, percorra esta ramificacao ate encontrar o filho mais a direita deste lado (next Filho Right == null)
         if(ladoArvore == 'l') {
@@ -227,16 +300,14 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
                 // Remova este arvore.No do lugar original onde estava para coloca-lo no lugar do elemento a ser removido
                 elementoAtual.getPai().setFilhoLeft(null);
 
+
                 // Retorne o elemento
                 return elementoAtual;
             }
             // Caso nao tenha encontrado, percorra recursivamente.
             return encontraSucessorInOrder(elementoAtual.getFilhoLeft(), ladoArvore);
         }
-
     }
-
-
 
 
     @Override
