@@ -267,7 +267,10 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T>{
 
     @Override
     public String caminharEmNivel() {
-        return "";
+        if (this.raiz == null){
+            return "[]";
+        }
+        return null;
     }
 
     @Override
