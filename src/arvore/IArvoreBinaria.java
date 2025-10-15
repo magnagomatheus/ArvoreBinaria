@@ -1,4 +1,4 @@
-//package lib;
+package arvore;//package lib;
 
 import java.util.Comparator;
 
@@ -24,8 +24,8 @@ public interface IArvoreBinaria<T> {
 
     /**
      * Método adicionar PRIVATE que faz de maneira recursiva a busca do local em que o novo elemento sera inserido.
-     * @param novoElemento - No do elemento do Tipo T a ser armazenado na árvore.
-     * @param currentNo - No do atual elemento da arvore.
+     * @param novoElemento - arvore.No do elemento do Tipo T a ser armazenado na árvore.
+     * @param currentNo - arvore.No do atual elemento da arvore.
      *
      */
     public boolean adicionar(No<T> novoElemento, No<T> currentNo);
