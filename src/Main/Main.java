@@ -1,12 +1,17 @@
+package Main;
+
 import arvore.Aluno;
 import arvore.ArvoreBinaria;
+import arvore.ComparadorAlunoPorMatricula;
 import arvore.ComparadorAlunoPorNome;
+
 
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
     ArvoreBinaria<Aluno> arvore = new ArvoreBinaria<>(new ComparadorAlunoPorNome());
+    ComparadorAlunoPorMatricula comparador = new ComparadorAlunoPorMatricula();
 
     String menu = "Selecione uma modalidade:\n" +
             "1 - Inserir elemento\n" +
@@ -14,7 +19,6 @@ public class Main {
             "3 - Pesquisar elemento de forma alternativa\n" +
             "4 - Remover elemento\n" +
             "5 - Caminhar em ordem\n" +
-            "6 - \n" +
             "0 - Sair" ;
 
     Scanner s = new Scanner(System.in);
@@ -29,32 +33,32 @@ public class Main {
             if (opcao == 1) {
                 System.out.println("Inserindo elemento na Árvore");
                 System.out.println("Digite a Matricula do Aluno: ");
-                int matricula = s.nextInt();
-                // S.NEXTLINE() PARA CONSUMIR O \n
-                s.nextLine();
+                int matricula = Integer.parseInt(s.nextLine().trim());
+
+
 
                 System.out.println("Digite o Nome do Aluno :");
-                String nome = s.nextLine();
+                String nome = s.nextLine().trim();
 
                 System.out.println("Digite a Nota do Aluno :");
-                double nota = s.nextDouble();
-                // S.NEXTLINE() PARA CONSUMIR O \n
-                s.nextLine();
+                //double nota = s.nextDouble();
+
+
                 arvore.adicionar(new Aluno(matricula,nome));
 
             } else if (opcao == 2) {
                 System.out.println("Pesquisar elemento na Árvore");
                 System.out.println("Digite o Nome do Aluno: ");
                 String nome = s.nextLine().trim();
-                // S.NEXTLINE() PARA CONSUMIR O \n
+
 
                 System.out.println(arvore.pesquisar(new Aluno(11,nome)));
 
             }else if (opcao == 3) {
                 System.out.println("Pesquisar elemento na Árvore com forma alternativa");
-                int valor = s.nextInt();
-                s.nextLine();
-                System.out.println(arvore.pesquisar(new Aluno(valor,null)));
+                int valor = Integer.parseInt(s.nextLine().trim());
+
+                System.out.println(arvore.pesquisar(new Aluno(valor,null), comparador));
 
 
             }else if (opcao == 4) {
@@ -64,7 +68,7 @@ public class Main {
 
             }else if (opcao == 5) {
                 System.out.println("Caminhar pela Árvore em ordem");
-                arvore.caminharEmOrdem();
+                System.out.println(arvore.caminharEmOrdem());
 
             }
         } catch (Exception e) {
