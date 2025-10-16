@@ -20,15 +20,7 @@ public interface IArvoreBinaria<T> {
      * @param novoValor - Elemento do Tipo T a ser armazenado na árvore.
      *
      */
-    public boolean adicionar(T novoValor);
-
-    /**
-     * Método adicionar PRIVATE que faz de maneira recursiva a busca do local em que o novo elemento sera inserido.
-     * @param novoElemento - arvore.No do elemento do Tipo T a ser armazenado na árvore.
-     * @param currentNo - arvore.No do atual elemento da arvore.
-     *
-     */
-    public boolean adicionar(No<T> novoElemento, No<T> currentNo);
+    public T adicionar(T novoValor);
 
 
     /**
@@ -45,7 +37,7 @@ public interface IArvoreBinaria<T> {
      * @param comparador - Comparator a ser utilizado na busca.
      * @return caso tenha sido encontrado um elemento com o valor buscado, o mesmo será retornado. Caso contrário retorna null.
      */
-    public T pesquisar(T valor, Comparator comparador, No<T> noAtual);
+    public T pesquisar(T valor, Comparator comparador);
 
 
     /**

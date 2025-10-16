@@ -14,26 +14,36 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
     // Função Adicionar --> Adiciona um novo elemento de tipo T, ou seja, aceita qualquer tipo de valor na árvore binária.
     @Override
-    public boolean adicionar(T novoValor) {
+    public T adicionar(T novoValor) {
         // Criação do Nó (estrutura) que conterá o novo valor a ser adicionado na árvore.
         No<T> novoElemento = new No<T>(novoValor);
         // Verifica se a arvore esta vazia
         if (this.raiz == null) {
             // O novo elemento se torna a raiz da arvore.
             this.raiz = novoElemento;
-            return true;
+            return this.raiz.getValor();
         }
         // Caso não esteja, chame a função adicionar recursiva, que percorre a árvore até encontrar o lugar ideal para o novo valor.
+        //if(adicionar(novoElemento, this.raiz)) {
+        //    System.out.println("Elemento adicionado com sucesso!");
+        //} else {
+        //    System.out.println("Não foi possível adicionar o elemento.");
+        //}
         adicionar(novoElemento, this.raiz);
-        return true;
+        return this.raiz.getValor();
     }
 
 
 
+    /**
+     * Método adicionar PRIVATE que faz de maneira recursiva a busca do local em que o novo elemento sera inserido.
+     * @param novoElemento - arvore.No do elemento do Tipo T a ser armazenado na árvore.
+     * @param currentNo - arvore.No do atual elemento da arvore.
+     *
+     */
 
     // Função Adicionar (Recursiva) --> Percorre toda a árvore comparando cada nó com o novo valor, com o objetivo de encontrar o lugar ideal para adição do novo elemento.
-    @Override
-    public boolean adicionar(No<T> novoElemento, No<T> currentNo) {
+    private boolean adicionar(No<T> novoElemento, No<T> currentNo) {
         // Comparação entre o valor do novo elemento e o valor do elemento atual da lista.
         int cmp = comparador.compare(novoElemento.getValor(), currentNo.getValor());
         // Verifica se o valor novo elemento eh MAIOR do que o valor do elemento atual da arvore
@@ -43,7 +53,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
                 // Caso não tenha um próximo nó, o novo elemento se torna este próximo, se torna filho do nó atual da àrvore.
                 currentNo.setFilhoRight(novoElemento);
                 // return true (deu certo)
-                System.out.println("Elemento adicionado com sucesso!");
+                System.out.println("Elemento adicionado com sucesso!" + novoElemento.getValor());
                 return true;
             }
             // Caso tenha um próximo elemento de valor maior, passe para o próximo nó chamando a própria função recursivamente, atualizando apenas o currentNo.
@@ -56,7 +66,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
                 // Se não tiver um elemento menor que o nó atual na lista, o novo elemento se torna filho a esquerda do nó atual.
                 currentNo.setFilhoLeft(novoElemento);
                 // return true (elemento adicionado)
-                System.out.println("Elemento adicionado com sucesso!");
+                System.out.println("Elemento adicionado com sucesso!" + novoElemento.getValor());
                 return true;
             }
             // Caso tenha um próximo elemento menor que o nó atual (filho a esquerda), chame o método adicionar recursivamente atualizando o parametro currentNo.
@@ -65,12 +75,11 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         // Caso o novo elemento e o Nó atual forem iguais
         else {
             // O novo elemento se torna filho a direito do nó atual da árvore
-            currentNo.setFilhoRight(novoElemento);
-            System.out.println("Elemento adicionado com sucesso!");
-            return true;
+            //currentNo.setFilhoRight(novoElemento);
+            // retorna false (nao foi possível adicionar)
+            System.out.println("Não foi possível adicionar o elemento: " + novoElemento.getValor());
+            return false;
         }
-        // retorna false (nao foi possível adicionar)
-        System.out.println("Não foi possível adicionar o elemento: " + novoElemento.getValor());
         return false;
     }
 
@@ -89,7 +98,16 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         return pesquisar(valor, this.raiz);
     }
 
-
+    @Override
+    public T pesquisar(T valor, Comparator comparador) {
+        // Verifica se a lista esta vazia
+        if(this.raiz == null) {
+            System.out.println("Não há nenhum elemento na lista.");
+            return null;
+        }
+        // Caso não esteja, chame a função pesquisar que efetuará a busca recursivamente.
+        return pesquisarWithComparator(valor, comparador,this.raiz);
+    }
 
 
     // Função pesquisar private --> Pesquisa o elemento recursivamente com o comparador da própria instancia da classe.
@@ -123,8 +141,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
 
     // Função pesquisar com comparador como argumento --> Pesquisa o elemento recursivamente com o comparador da escolha do usuário, e não necessáriamente da instância da classe.
-    @Override
-    public T pesquisar(T valor, Comparator comparador, No<T> noAtual) {
+    private T pesquisarWithComparator(T valor, Comparator comparador, No<T> noAtual) {
         // Verifica se chegou ao fim da lista.
         if(noAtual == null) {
             System.out.println("Elemento " + valor + " não encontrado.");

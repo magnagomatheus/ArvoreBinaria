@@ -10,11 +10,14 @@ public class testGeradorArvores {
         GeradorArvore creator = new GeradorArvore();
 
 
-        creator.geraArvoreDegenerada(10, arvoreAlunoNome);
-        creator.geraArvoreDegenerada(10,  arvoreAlunoMatricula);
+        //creator.geraArvoreDegenerada(10, arvoreAlunoNome);
+        //creator.geraArvoreDegenerada(10,  arvoreAlunoMatricula);
 
-        //arvoreAlunoNome.printArvore();
-        arvoreAlunoMatricula.printArvore();
+        creator.geraArvorePerfeitamenteBalanceada(0, 10, arvoreAlunoNome);
+        //creator.geraArvorePerfeitamenteBalanceada(0, 10, arvoreAlunoMatricula);
+
+        arvoreAlunoNome.printArvore();
+        //arvoreAlunoMatricula.printArvore();
 
     }
 
