@@ -370,23 +370,18 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
     @Override
     public String caminharEmOrdem() {
-        String resultado = "[";
+        String resultado = "[ \n ";
         resultado = auxEmOrdem(resultado, this.raiz);
         resultado+="]";
         return resultado;
     }
 
     private String auxEmOrdem(String parcial, No<T> noAtual){
-        if (noAtual.getFilhoLeft() == null){
-            parcial+= noAtual.getValor().toString() + " , ";
+        if (noAtual == null) {
             return parcial;
         }
         parcial = auxEmOrdem(parcial, noAtual.getFilhoLeft());
-        parcial+= noAtual.getValor().toString() + " , ";
-        if (noAtual.getFilhoRight() == null){
-            parcial+= noAtual.getValor().toString() + " , ";
-            return parcial;
-        }
+        parcial+= noAtual.getValor().toString() + " \n ";
         parcial = auxEmOrdem(parcial, noAtual.getFilhoRight());
         return parcial;
     }
