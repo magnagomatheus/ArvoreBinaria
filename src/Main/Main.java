@@ -19,6 +19,7 @@ public class Main {
             "3 - Pesquisar elemento de forma alternativa\n" +
             "4 - Remover elemento\n" +
             "5 - Caminhar em ordem\n" +
+            "6 - Caminhar em nível\n" +
             "0 - Sair" ;
 
     Scanner s = new Scanner(System.in);
@@ -69,6 +70,10 @@ public class Main {
             }else if (opcao == 5) {
                 System.out.println("Caminhar pela Árvore em ordem");
                 System.out.println(arvore.caminharEmOrdem());
+
+            }else if (opcao == 6) {
+                System.out.println("Caminhar pela Árvore em nível");
+                System.out.println(arvore.caminharEmNivel());
 
             }
         } catch (Exception e) {

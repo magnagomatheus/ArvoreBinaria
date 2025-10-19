@@ -1,6 +1,8 @@
 package arvore;
 
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
@@ -365,8 +367,32 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         if (this.raiz == null){
             return "[]";
         }
-        return null;
+        Queue<No<T>> fila = new LinkedList<>();
+        fila.add(this.raiz); fila.add(null);
+        No<T> noAtual= fila.remove();
+        StringBuilder resultado = new StringBuilder("[");
+        while(!fila.isEmpty()){
+            if (noAtual==null){
+                fila.add(null);
+                resultado.append("\n");
+
+            }else{
+                if (noAtual.getFilhoLeft() != null){
+                    fila.add(noAtual.getFilhoLeft());
+                }
+                if (noAtual.getFilhoRight() != null){
+                    fila.add(noAtual.getFilhoRight());
+                }
+                resultado.append(noAtual.getValor().toString());
+                resultado.append(" ");
+            }
+            noAtual = fila.remove();
+        }
+        resultado.append("]");
+        return resultado.toString();
+
     }
+
 
     @Override
     public String caminharEmOrdem() {
