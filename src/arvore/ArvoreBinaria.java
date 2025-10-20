@@ -364,12 +364,17 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
     @Override
     public String caminharEmNivel() {
+        // Caso a arvore esteja vazia a função retorna a string vazia
         if (this.raiz == null){
             return "[]";
         }
+        // Cria uma fila para a impressao dos nós de forma ordenada por nivel
         Queue<No<T>> fila = new LinkedList<>();
+        // Adicionando a raiz ao começo da fila
         fila.add(this.raiz); fila.add(null);
+        // retirando a raiz para iniciar o processo
         No<T> noAtual= fila.remove();
+        // iniciando uma StringBuilder para a concatenação de nós em um loop na String
         StringBuilder resultado = new StringBuilder("[");
         while(!fila.isEmpty()){
             if (noAtual==null){
@@ -377,18 +382,23 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
                 resultado.append("\n");
 
             }else{
+                // Adiciona os filhos do nó no nivel atual ao fim da fila caso existam.
                 if (noAtual.getFilhoLeft() != null){
                     fila.add(noAtual.getFilhoLeft());
                 }
                 if (noAtual.getFilhoRight() != null){
                     fila.add(noAtual.getFilhoRight());
                 }
+                // Adiciona o nó atual a String resultado
                 resultado.append(noAtual.getValor().toString());
                 resultado.append(" ");
             }
+            // atualiza a variavel do loop pegando um novo no da fila
             noAtual = fila.remove();
         }
+        // Adiciona a ] para finalizar a String
         resultado.append("]");
+        // Transforma a StringBuilder em string e a retorna
         return resultado.toString();
 
     }
@@ -396,19 +406,26 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
     @Override
     public String caminharEmOrdem() {
+        // Inicia a String que será retornada como resposta.
         String resultado = "[ \n ";
+        // chama a funçao auxiliar que é recursiva.
         resultado = auxEmOrdem(resultado, this.raiz);
         resultado+="]";
         return resultado;
     }
 
     private String auxEmOrdem(String parcial, No<T> noAtual){
+        // Verifica se o nó atual é nulo. Caso seja, retorna o resultado parcial sem alteração. Isso ativa a linha 15 imprimindo o nó anterior ao nulo
         if (noAtual == null) {
             return parcial;
         }
+        // Chama a função passando o filho a esquerda do no atual. Percorre os nós a esquerda para que sejam adicionado a baixo
         parcial = auxEmOrdem(parcial, noAtual.getFilhoLeft());
+        // Imprime o nó atual. Isso ocorre após encontrar um no nulo a esquerda. Adiciona o nó atual na resposta
         parcial+= noAtual.getValor().toString() + " \n ";
+        // Verifica se o nó possui um no a direita. Isso é feito para percorrer os nós a direita do nós a direita e adicionalos a resposta
         parcial = auxEmOrdem(parcial, noAtual.getFilhoRight());
+        // Quando a verificação de um nó acaba, e ele e seus filhos tenham sido escritos o resultado parcial é retornado para quem chamou a função.
         return parcial;
     }
 
