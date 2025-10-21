@@ -335,13 +335,18 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
     }
 
     private int calcularAltura(No<T> no){
+        // condição de parada, se o nó for nulo a altura é 0
         if (no == null) {
             return 0;
         }
 
+        // calculo recursivo da subarvore da esquerda
         int alturaEsquerda = calcularAltura(no.getFilhoLeft());
+
+        // calculo recursivo da subarvore da direita
         int alturaDireita = calcularAltura(no.getFilhoRight());
 
+        // retorna a altura da maior subarvore + 1 que é o nó atual
         if (alturaEsquerda > alturaDireita) {
             return 1 + alturaEsquerda;
         } else {
@@ -356,9 +361,11 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
     }
 
     private int nodeCounter(No<T> no){
+        // condição de parada, se o nó é nulo soma 0
         if(no == null){
             return 0;
         }
+        // retorna o 1 do nó atual + contagem da esquerda + contagem da direita
         return 1 + nodeCounter(no.getFilhoLeft()) + nodeCounter(no.getFilhoRight());
     }
 
@@ -430,22 +437,27 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
     }
 
 
-
+    // debug pra ver a árvore
     public void printArvore() {
+        // chama o metodo privado, com nível 0 que representa a raiz mãe
         printArvore(this.raiz, 0);
     }
 
     private void printArvore(No<T> no, int nivel) {
+        // condição de parada, se nó == null não printa
         if (no != null) {
+            // recursão para processar primeiro o filho da direita
             printArvore(no.getFilhoRight(), nivel + 1);
 
             // Imprime espaços para indentação
             for (int i = 0; i < nivel; i++) {
+                // espaço por nível de profundidade (talvez aumentar isso)
                 System.out.print("    ");
             }
-
+            // imprime o valor do nó atual
             System.out.println(no.getValor());
 
+            //recursão para processar o filho da esquerda
             printArvore(no.getFilhoLeft(), nivel + 1);
         }
     }
