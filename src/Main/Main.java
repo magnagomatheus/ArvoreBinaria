@@ -91,8 +91,17 @@ public class Main {
 
             }else if (opcao == 4) {
                 System.out.println("Remover elemento da Árvore");
-                String valor = s.nextLine().trim();
-                arvore.remover(new Aluno(1, valor));
+                String nome = null;
+                int valor = 0;
+                if (arvore.getComparator() == comparadorN) {
+                    System.out.println("Digite o Nome do Aluno :");
+                    nome = s.nextLine().trim();
+
+                }else{
+                    System.out.println("Digite a matricula do Aluno :");
+                    valor = Integer.parseInt(s.nextLine().trim());
+                }
+                arvore.remover(new Aluno(valor, nome));
 
             }else if (opcao == 5) {
                 System.out.println("Caminhar pela Árvore em ordem");
