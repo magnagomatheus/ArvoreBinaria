@@ -461,4 +461,6 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
             printArvore(no.getFilhoLeft(), nivel + 1);
         }
     }
+
+    public Comparator<T> getComparator() {return this.comparador;}
 }

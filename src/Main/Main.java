@@ -9,18 +9,22 @@ import arvore.ComparadorAlunoPorNome;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args){
-    ArvoreBinaria<Aluno> arvore = new ArvoreBinaria<>(new ComparadorAlunoPorNome());
-    ComparadorAlunoPorMatricula comparador = new ComparadorAlunoPorMatricula();
+    static void main(String[] args){
+    ComparadorAlunoPorMatricula comparadorM = new ComparadorAlunoPorMatricula();
+    ComparadorAlunoPorNome comparadorN = new ComparadorAlunoPorNome();
+
+    ArvoreBinaria<Aluno> arvore = new ArvoreBinaria<>(comparadorN);
 
     String menu = "Selecione uma modalidade:\n" +
-            "1 - Inserir elemento\n" +
-            "2 - Pesquisar elemento\n" +
-            "3 - Pesquisar elemento de forma alternativa\n" +
-            "4 - Remover elemento\n" +
-            "5 - Caminhar em ordem\n" +
-            "6 - Caminhar em nível\n" +
-            "0 - Sair" ;
+            "-2 - Criar uma nova Árvore com comparador por Matricula\n" +
+            "-1 - Criar uma nova Árvore com comparador por Nome\n" +
+            " 1 - Inserir elemento\n" +
+            " 2 - Pesquisar elemento\n" +
+            " 3 - Pesquisar elemento de forma alternativa\n" +
+            " 4 - Remover elemento\n" +
+            " 5 - Caminhar em ordem\n" +
+            " 6 - Caminhar em nível\n" +
+            " 0 - Sair" ;
 
     Scanner s = new Scanner(System.in);
 
@@ -31,12 +35,19 @@ public class Main {
         try {
             System.out.println(menu);
             opcao = Integer.parseInt(s.nextLine().trim());
+
+            if (opcao == -2){
+                System.out.println("Criando uma nova Árvore com um comparador por matricula.");
+                arvore = new ArvoreBinaria<>(comparadorM);
+            }
+            if (opcao == -1){
+                System.out.println("Criando uma nova Árvore com um comparador por nome.");
+                arvore = new ArvoreBinaria<>(comparadorN);
+            }
             if (opcao == 1) {
                 System.out.println("Inserindo elemento na Árvore");
                 System.out.println("Digite a Matricula do Aluno: ");
                 int matricula = Integer.parseInt(s.nextLine().trim());
-
-
 
                 System.out.println("Digite o Nome do Aluno :");
                 String nome = s.nextLine().trim();
@@ -44,23 +55,39 @@ public class Main {
                 System.out.println("Digite a Nota do Aluno :");
                 //double nota = s.nextDouble();
 
-
                 arvore.adicionar(new Aluno(matricula,nome));
 
             } else if (opcao == 2) {
                 System.out.println("Pesquisar elemento na Árvore");
-                System.out.println("Digite o Nome do Aluno: ");
-                String nome = s.nextLine().trim();
+                int valor = 0;
+                String nome = null;
+                if (arvore.getComparator() == comparadorN) {
+                    System.out.println("Digite o Nome do Aluno: ");
+                    nome = s.nextLine().trim();
 
+                }else{
+                    System.out.println("Digite a matricula do Aluno: ");
+                    valor = Integer.parseInt(s.nextLine().trim());
 
-                System.out.println(arvore.pesquisar(new Aluno(11,nome)));
+                }
+                System.out.println(arvore.pesquisar(new Aluno(valor,nome)));
+
 
             }else if (opcao == 3) {
                 System.out.println("Pesquisar elemento na Árvore com forma alternativa");
-                int valor = Integer.parseInt(s.nextLine().trim());
+                int valor = 0;
+                String nome = null;
+                if (arvore.getComparator() == comparadorN) {
+                    System.out.println("Digite a Matricula do Aluno :");
+                    valor = Integer.parseInt(s.nextLine().trim());
 
-                System.out.println(arvore.pesquisar(new Aluno(valor,null), comparador));
+                    System.out.println(arvore.pesquisar(new Aluno(valor, nome), comparadorM));
+                }else{
+                    System.out.println("Digite a Nome do Aluno :");
+                    nome = s.nextLine().trim();
 
+                    System.out.println(arvore.pesquisar(new Aluno(valor, nome ), comparadorN));
+                }
 
             }else if (opcao == 4) {
                 System.out.println("Remover elemento da Árvore");
