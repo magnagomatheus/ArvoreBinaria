@@ -9,7 +9,7 @@ import arvore.ComparadorAlunoPorNome;
 import java.util.Scanner;
 
 public class Main {
-    static void main(String[] args){
+    public static void main(String[] args){
     ComparadorAlunoPorMatricula comparadorM = new ComparadorAlunoPorMatricula();
     ComparadorAlunoPorNome comparadorN = new ComparadorAlunoPorNome();
 
