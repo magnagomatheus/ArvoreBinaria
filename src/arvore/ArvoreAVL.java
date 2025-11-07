@@ -10,7 +10,7 @@ public class ArvoreAVL<T> extends ArvoreBinaria<T>{
     @Override
     public T adicionar(T novoValor) {
         raiz = adicionarAVL(raiz, novoValor);
-        return this.raiz.getValor();
+        return novoValor;
     }
 
     private No<T> adicionarAVL(No<T> no, T valor){
@@ -38,11 +38,11 @@ public class ArvoreAVL<T> extends ArvoreBinaria<T>{
             return no;
         }
         // chamada de balanceamento para cada adição
-        balanco(no);
-        return no;
+
+        return balanco(no);
     }
     // confusao aqui
-    private void balanco(No<T> no){
+    private No<T> balanco(No<T> no){
         int fator = fatorBalanceamento(no);
         // balanceamento, subarvore esquerda mais "pesada"
         if (fator == -2){
@@ -60,8 +60,21 @@ public class ArvoreAVL<T> extends ArvoreBinaria<T>{
                 // rotação À direita do nó atual(pai)
                 rotacaoDireita(no);
             }
+        }else if (fator == 2){
+            int fatorFilhoRight = fatorBalanceamento(no.getFilhoRight());
+
+            if (fatorFilhoRight >= 0){
+                rotacaoEsquerda(no);
+            }
+            else {
+                rotacaoDireita(no.getFilhoRight());
+                rotacaoEsquerda(no);
+            }
         }
+        return no;
     }
+
+    // alterar retorno
     public void rotacaoDireita(No<T> no){
         No<T> aux = no.getFilhoLeft();
         no.setFilhoLeft(aux.getFilhoRight());
@@ -76,7 +89,7 @@ public class ArvoreAVL<T> extends ArvoreBinaria<T>{
             no.setPai(aux);
         }
     }
-
+    // alterar retorno
     public void rotacaoEsquerda(No<T> no){
         No<T> aux = no.getFilhoRight();
         no.setFilhoRight(aux.getFilhoLeft());
