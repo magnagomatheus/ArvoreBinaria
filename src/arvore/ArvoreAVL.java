@@ -35,7 +35,7 @@ public class ArvoreAVL<T> extends ArvoreBinaria<T>{
             }
             // valor q ja existe na arvore nãp é inserido
         } else {
-            return null;
+            return no;
         }
         // chamada de balanceamento para cada adição
         balanco(no);
@@ -98,4 +98,30 @@ public class ArvoreAVL<T> extends ArvoreBinaria<T>{
         }
         return calcularAltura(no.getFilhoRight()) - calcularAltura(no.getFilhoLeft());
     }
+    @Override
+    public int altura() {
+        return calcularAltura(this.raiz);
+    }
+
+    private int calcularAltura(No<T> no){
+        // condição de parada, se o nó for nulo a altura é 0
+        if (no == null) {
+            return 0;
+        }
+
+        // calculo recursivo da subarvore da esquerda
+        int alturaEsquerda = calcularAltura(no.getFilhoLeft());
+
+        // calculo recursivo da subarvore da direita
+        int alturaDireita = calcularAltura(no.getFilhoRight());
+
+        // retorna a altura da maior subarvore + 1 que é o nó atual
+        if (alturaEsquerda > alturaDireita) {
+            return 1 + alturaEsquerda;
+        } else {
+            return 1 + alturaDireita;
+        }
+    }
+
+
 }
