@@ -1,5 +1,7 @@
 package arvore;
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class ArvoreAVL<T> extends ArvoreBinaria<T>{
 
@@ -155,5 +157,45 @@ public class ArvoreAVL<T> extends ArvoreBinaria<T>{
         }
     }
 
+
+    public String caminharEmNivel() {
+        // Caso a arvore esteja vazia a função retorna a string vazia
+        if (this.raiz == null){
+            return "[]";
+        }
+        // Cria uma fila para a impressao dos nós de forma ordenada por nivel
+        Queue<No<T>> fila = new LinkedList<>();
+        // Adicionando a raiz ao começo da fila
+        fila.add(this.raiz); fila.add(null);
+        // retirando a raiz para iniciar o processo
+        No<T> noAtual= fila.remove();
+        // iniciando uma StringBuilder para a concatenação de nós em um loop na String
+        StringBuilder resultado = new StringBuilder("[");
+        while(!fila.isEmpty()){
+            if (noAtual==null){
+                fila.add(null);
+                resultado.append("\n");
+
+            }else{
+                // Adiciona os filhos do nó no nivel atual ao fim da fila caso existam.
+                if (noAtual.getFilhoLeft() != null){
+                    fila.add(noAtual.getFilhoLeft());
+                }
+                if (noAtual.getFilhoRight() != null){
+                    fila.add(noAtual.getFilhoRight());
+                }
+                // Adiciona o nó atual a String resultado
+                resultado.append(noAtual.getValor().toString());
+                resultado.append(" , ");
+            }
+            // atualiza a variavel do loop pegando um novo no da fila
+            noAtual = fila.remove();
+        }
+        // Adiciona a ] para finalizar a String
+        resultado.append("]");
+        // Transforma a StringBuilder em string e a retorna
+        return resultado.toString();
+
+    }
 
 }
