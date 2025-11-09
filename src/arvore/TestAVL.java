@@ -14,7 +14,7 @@ public class TestAVL {
 
         arv = new ArvoreAVL<>(compPorMatricula);
 
-        gerador.geraArvoreDegenerada(1,arv);
+        gerador.geraArvoreDegenerada(12,arv);
 
         System.out.println(arv.caminharEmNivel());
     }
