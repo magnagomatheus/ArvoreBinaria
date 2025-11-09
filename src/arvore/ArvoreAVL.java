@@ -9,41 +9,68 @@ public class ArvoreAVL<T> extends ArvoreBinaria<T>{
 
     @Override
     public T adicionar(T novoValor) {
-        raiz = adicionarAVL(raiz, novoValor);
-        return novoValor;
+        No<T> novoElemento = new No<T>(novoValor);
+        if (this.raiz == null) {
+            // O novo elemento se torna a raiz da arvore.
+            this.raiz = novoElemento;
+            System.out.println("Elemento adicionado com sucesso!" + novoElemento.getValor());
+            return this.raiz.getValor();
+        }
+        adicionarAVL(novoElemento,raiz);
+        this.raiz = balanco(raiz);
+        return this.raiz.getValor();
     }
 
-    private No<T> adicionarAVL(No<T> no, T valor){
-        if(no == null){
-            return new No<T>(valor);
-        }
-        int cmp = comparador.compare(valor, no.getValor());
 
-        if (cmp < 0){
-            // inserção subarvore esquerad
-            no.setFilhoLeft(adicionarAVL(no.getFilhoLeft(), valor));
-            // atualiza o pai do novo nó
-            if(no.getFilhoLeft() != null){
-                no.getFilhoLeft().setPai(no);
+    // Função Adicionar (Recursiva) --> Percorre toda a árvore comparando cada nó com o novo valor, com o objetivo de encontrar o lugar ideal para adição do novo elemento.
+    private boolean adicionarAVL(No<T> novoElemento, No<T> currentNo) {
+        // Comparação entre o valor do novo elemento e o valor do elemento atual da lista.
+        int cmp = comparador.compare(novoElemento.getValor(), currentNo.getValor());
+        // Verifica se o valor novo elemento eh MAIOR do que o valor do elemento atual da arvore
+        if (cmp > 0) {
+            // Se for maior, verifica se o elemento atual possui um filho a direita, ou seja, se o elemento atual a arvore tem algum nó com valor maior do que ele próprio.
+            if(currentNo.getFilhoRight() == null) {
+                // Caso não tenha um próximo nó, o novo elemento se torna este próximo, se torna filho do nó atual da àrvore.
+                currentNo.setFilhoRight(novoElemento);
+                novoElemento.setPai(currentNo);
+                // return true (deu certo)
+                System.out.println("Elemento adicionado com sucesso!" + novoElemento.getValor());
+                return true;
             }
-            // inserção subarvore direita
-        } else if (cmp > 0) {
-            no.setFilhoRight(adicionarAVL(no.getFilhoRight(),valor));
-            // atualiza o pai do novo nó
-            if(no.getFilhoRight() != null){
-                no.getFilhoRight().setPai(no);
-            }
-            // valor q ja existe na arvore nãp é inserido
-        } else {
-            return no;
+            // Caso tenha um próximo elemento de valor maior, passe para o próximo nó chamando a própria função recursivamente, atualizando apenas o currentNo.
+            adicionarAVL(novoElemento, currentNo.getFilhoRight());
+            currentNo.setFilhoRight(balanco(currentNo.getFilhoRight()));//balanco(currentNo.getFilhoRight());
         }
-        // chamada de balanceamento para cada adição
-
-        return balanco(no);
+        // Verifica se o valor novo elemento eh MENOR do que o valor do elemento atual da arvore
+        else if(cmp < 0) {
+            // Se for menor, verifica se o nó atual possui um filho a esquerda, ou seja, um elemento menor do que ele próprio
+            if(currentNo.getFilhoLeft() == null) {
+                // Se não tiver um elemento menor que o nó atual na lista, o novo elemento se torna filho a esquerda do nó atual.
+                currentNo.setFilhoLeft(novoElemento);
+                novoElemento.setPai(currentNo);
+                // return true (elemento adicionado)
+                System.out.println("Elemento adicionado com sucesso!" + novoElemento.getValor());
+                return true;
+            }
+            // Caso tenha um próximo elemento menor que o nó atual (filho a esquerda), chame o método adicionar recursivamente atualizando o parametro currentNo.
+            adicionarAVL(novoElemento, currentNo.getFilhoLeft());
+            currentNo.setFilhoLeft(balanco(currentNo.getFilhoLeft())); // balanco(currentNo.getFilhoLeft());
+        }
+        // Caso o novo elemento e o Nó atual forem iguais
+        else {
+            // O novo elemento se torna filho a direito do nó atual da árvore
+            //currentNo.setFilhoRight(novoElemento);
+            // retorna false (nao foi possível adicionar)
+            System.out.println("Não foi possível adicionar o elemento: " + novoElemento.getValor());
+            return false;
+        }
+        return false;
     }
+
     // confusao aqui
     private No<T> balanco(No<T> no){
         int fator = fatorBalanceamento(no);
+        No<T> novaRaiz;
         // balanceamento, subarvore esquerda mais "pesada"
         if (fator == -2){
             // verifica balanceamento pro filho esquerdo
@@ -52,57 +79,49 @@ public class ArvoreAVL<T> extends ArvoreBinaria<T>{
             // se pai e filho estão desbalanceados pra esquerda
             if (fatorFilhoLeft <= 0){
                 // rotação simples pra direita
-                rotacaoDireita(no);
+                return rotacaoDireita(no);
                 // desbalancemento pra direções opostas esquerda pai esquerda e filho direita
             } else{
                 // primeiro rotação à esquerda no filho esquerdo
-                rotacaoEsquerda(no.getFilhoLeft());
+                novaRaiz = rotacaoEsquerda(no.getFilhoLeft());
+                no.setFilhoLeft(novaRaiz);
                 // rotação À direita do nó atual(pai)
-                rotacaoDireita(no);
+                return rotacaoDireita(no);
             }
         }else if (fator == 2){
             int fatorFilhoRight = fatorBalanceamento(no.getFilhoRight());
 
             if (fatorFilhoRight >= 0){
-                rotacaoEsquerda(no);
+                return rotacaoEsquerda(no);
             }
             else {
-                rotacaoDireita(no.getFilhoRight());
-                rotacaoEsquerda(no);
+                novaRaiz = rotacaoDireita(no.getFilhoRight());
+                no.setFilhoRight(novaRaiz);
+                return rotacaoEsquerda(no);
             }
         }
         return no;
     }
 
-    // alterar retorno
-    public void rotacaoDireita(No<T> no){
+    // aparentemente completo, é necessario ajustar o pai de aux na adicionar.
+    public No<T> rotacaoDireita(No<T> no){
         No<T> aux = no.getFilhoLeft();
         no.setFilhoLeft(aux.getFilhoRight());
-        no.getFilhoRight().setPai(no);
+        if (no.getFilhoLeft()!= null){no.getFilhoLeft().setPai(no);}
         aux.setFilhoRight(no);
         aux.setPai(no.getPai());
-        if(no.getPai().getFilhoRight() == no){
-            no.getPai().setFilhoRight(aux);
-            no.setPai(aux);
-        }else{
-            no.getPai().setFilhoLeft(aux);
-            no.setPai(aux);
-        }
+        no.setPai(aux);
+        return aux;
     }
-    // alterar retorno
-    public void rotacaoEsquerda(No<T> no){
+    // aparentemente completo, é necessario ajustar o pai de aux na adicionar.
+    public No<T> rotacaoEsquerda(No<T> no){
         No<T> aux = no.getFilhoRight();
         no.setFilhoRight(aux.getFilhoLeft());
-        no.getFilhoRight().setPai(no);
+        if (no.getFilhoRight() != null){no.getFilhoRight().setPai(no);}
         aux.setFilhoLeft(no);
         aux.setPai(no.getPai());
-        if(no.getPai().getFilhoRight() == no){
-            no.getPai().setFilhoRight(aux);
-            no.setPai(aux);
-        }else{
-            no.getPai().setFilhoLeft(aux);
-            no.setPai(aux);
-        }
+        no.setPai(aux);
+        return aux;
     }
 
     public int fatorBalanceamento(No<T> no){
