@@ -20,11 +20,11 @@ public class TestAVL {
         //Inicinando contrato
         IArvoreBinaria<Aluno> arv;
 
-        arv = new ArvoreAVL<>(compPorMatricula);
+        arv = new ArvoreBinaria<>(compPorMatricula);
 
-        gerador.geraArvoreDegenerada(7,arv);
+        gerador.geraArvorePerfeitamenteBalanceada(1,15,arv);
 
-        System.out.println(((ArvoreAVL<?>) arv).caminharEmNivel());
+        System.out.println(arv.caminharEmNivel());
 
         do{
             try {
@@ -51,6 +51,10 @@ public class TestAVL {
                 }
                 if (opcao == 3) {
                     System.out.println(arv.caminharEmOrdem());
+                }
+                if (opcao == 4) {
+                    int matricula = Integer.parseInt(s.nextLine().trim());
+                    System.out.println(arv.remover(new Aluno(matricula, null)));
                 }
             }catch ( Exception e){
                 System.out.println("Erro ao executar o menu!");
