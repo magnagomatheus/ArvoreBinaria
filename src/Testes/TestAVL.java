@@ -1,4 +1,6 @@
-package arvore;
+package Testes;
+
+import arvore.*;
 
 import java.util.Scanner;
 
@@ -22,7 +24,7 @@ public class TestAVL {
 
         gerador.geraArvoreDegenerada(7,arv);
 
-        System.out.println(arv.caminharEmNivel());
+        System.out.println(((ArvoreAVL<?>) arv).caminharEmNivel());
 
         do{
             try {
