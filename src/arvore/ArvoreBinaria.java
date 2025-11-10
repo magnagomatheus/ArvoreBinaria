@@ -239,27 +239,37 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
                     return noAtual.getValor();
                 }
             }
-            // Verifica se tem apenas um filho a direita
+            // Verifica se o no a ser removido tem apenas um filho a direita
             else if(filhoEsquerdo == null && filhoDireito != null) {
                 System.out.println("ENTROU AQUI NO FILHO A DIREITA --> " + filhoDireito.getValor());
                 if(elemAnterior != null) {
-                    elemAnterior.setFilhoRight(filhoDireito);
+                    filhoDireito.setPai(elemAnterior);
+                    // Veririca se o no atual eh filho direito do elemAnterior
+                    if(elemAnterior.getFilhoRight() != null && comparador.compare(noAtual.getValor(), elemAnterior.getFilhoRight().getValor()) == 0) {
+                        elemAnterior.setFilhoRight(filhoDireito);
+                    } else {
+                        elemAnterior.setFilhoLeft(filhoDireito);
+                    }
                 } else {
                     this.raiz = filhoDireito;
                     filhoDireito.setPai(null);
-                    this.raiz.setFilhoRight(null);
                 }
 
                 return noAtual.getValor();
             }
-            // Verifica se tem apenas um filho a esquerda
+            // Verifica se o no ser removido tem apenas um filho a esquerda
             else if(filhoEsquerdo != null && filhoDireito == null) {
                 if(elemAnterior != null) {
-                    elemAnterior.setFilhoLeft(filhoEsquerdo);
+                    filhoEsquerdo.setPai(elemAnterior);
+                    // Veririca se o no atual eh filho Esquerdo do elemAnterior
+                    if(comparador.compare(noAtual.getValor(), elemAnterior.getFilhoLeft().getValor()) == 0) {
+                        elemAnterior.setFilhoLeft(filhoEsquerdo);
+                    } else {
+                        elemAnterior.setFilhoRight(filhoEsquerdo);
+                    }
                 } else {
                     this.raiz = filhoEsquerdo;
                     filhoEsquerdo.setPai(null);
-                    this.raiz.setFilhoLeft(null);
                 }
                 return noAtual.getValor();
             }
