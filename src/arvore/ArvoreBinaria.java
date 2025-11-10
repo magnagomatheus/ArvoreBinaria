@@ -262,7 +262,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
                 if(elemAnterior != null) {
                     filhoEsquerdo.setPai(elemAnterior);
                     // Veririca se o no atual eh filho Esquerdo do elemAnterior
-                    if(comparador.compare(noAtual.getValor(), elemAnterior.getFilhoLeft().getValor()) == 0) {
+                    if(elemAnterior.getFilhoLeft() != null && comparador.compare(noAtual.getValor(), elemAnterior.getFilhoLeft().getValor()) == 0) {
                         elemAnterior.setFilhoLeft(filhoEsquerdo);
                     } else {
                         elemAnterior.setFilhoRight(filhoEsquerdo);
