@@ -302,7 +302,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
     @Override
     public int altura() {
-        return calcularAltura(this.raiz);
+        return calcularAltura(this.raiz)-1;
     }
 
     private int calcularAltura(No<T> no){
