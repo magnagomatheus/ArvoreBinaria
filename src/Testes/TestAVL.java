@@ -1,4 +1,6 @@
-package arvore;
+package Testes;
+
+import arvore.*;
 
 public class TestAVL {
     public static void main(String[] args){

@@ -1,10 +1,13 @@
-package arvore;
+package Testes;
 
-import arvore.GeradorArvore;
+import arvore.*;
+
+import java.util.Scanner;
 
 public class testGeradorArvores {
 
     public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
         // iniciando comparadores
         ComparadorAlunoPorMatricula compPorMatricula = new ComparadorAlunoPorMatricula();
         ComparadorAlunoPorNome compPorNome = new ComparadorAlunoPorNome();
@@ -23,14 +26,18 @@ public class testGeradorArvores {
         System.out.println("Árvore Degenerada Criada");
         //Imprimo a quantidade de nós e a altura da árvore resultante
         System.out.println("Quantidade de Nós: " + arv.quantidadeNos()+ " Altura: " + arv.altura());
+        s.next();
+
         arv = new ArvoreBinaria<>(compPorMatricula);
         gerador.geraArvoreDegenerada(200, arv);
         System.out.println("Árvore Degenerada Criada");
         System.out.println("Quantidade de Nós: " + arv.quantidadeNos()+ " Altura: " + arv.altura());
+        s.next();
         arv = new ArvoreBinaria<>(compPorMatricula);
         gerador.geraArvoreDegenerada(1000, arv);
         System.out.println("Árvore Degenerada Criada");
         System.out.println("Quantidade de Nós: " + arv.quantidadeNos()+ " Altura: " + arv.altura());
+        s.next();
 //------Fim do trecho citado nas questões 1, 2 e 3 do relatório-------------------------------
 
 //------Início do trecho citado nas questões 5, 6 e 7 do relatório-------------------------------
@@ -39,14 +46,17 @@ public class testGeradorArvores {
         gerador.geraArvorePerfeitamenteBalanceada(1,100,arv);
         System.out.println("Árvore Perfeitamente Balanceada Criada");
         System.out.println("Quantidade de Nós: " + arv.quantidadeNos()+ " Altura: " + arv.altura());
+        s.next();
         arv = new ArvoreBinaria<>(compPorMatricula);
         gerador.geraArvorePerfeitamenteBalanceada(1,200,arv);
         System.out.println("Árvore Perfeitamente Balanceada Criada");
         System.out.println("Quantidade de Nós: " + arv.quantidadeNos()+ " Altura: " + arv.altura());
+        s.next();
         arv = new ArvoreBinaria<>(compPorMatricula);
         gerador.geraArvorePerfeitamenteBalanceada(1,1000,arv);
         System.out.println("Árvore Perfeitamente Balanceada Criada");
         System.out.println("Quantidade de Nós: " + arv.quantidadeNos()+ " Altura: " + arv.altura());
+        s.next();
 //------Fim do trecho citado nas questões 5, 6 e 7 do relatório-------------------------------
 
 //------Início do trecho citado na questão 9 do relatório-------------------------------
