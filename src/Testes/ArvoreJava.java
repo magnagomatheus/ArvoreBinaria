@@ -8,7 +8,7 @@ import arvore.ComparadorAlunoPorNome;
 
 public class ArvoreJava {
     public static void main(String[] args) {
-        System.out.println("=== TreeSet de Alunos ===");
+        System.out.println("TreeSet de Alunos");
 
         //instanciando treesets
         TreeSet<Aluno> alunosMSet = new TreeSet<>(new ComparadorAlunoPorMatricula());
