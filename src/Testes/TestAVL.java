@@ -39,7 +39,6 @@ public class TestAVL {
                     System.out.println("Digite o Nome do Aluno :");
                     String nome = s.nextLine().trim();
 
-                    System.out.println("Digite a Nota do Aluno :");
                     //double nota = s.nextDouble();
 
                     arv.adicionar(new Aluno(matricula, nome));

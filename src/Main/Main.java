@@ -52,9 +52,6 @@ public class Main {
                     System.out.println("Digite o Nome do Aluno :");
                     String nome = s.nextLine().trim();
 
-                    System.out.println("Digite a Nota do Aluno :");
-                    //double nota = s.nextDouble();
-
                     arvore.adicionar(new Aluno(matricula,nome));
 
                 } else if (opcao == 2) {
