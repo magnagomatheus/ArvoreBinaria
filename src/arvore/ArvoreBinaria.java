@@ -310,7 +310,6 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         if(elementoAtual.getFilhoLeft() == null) {
 
             // Retorne o elemento
-            System.out.println("ESTE EH O SUCESSOR IN ORDER LEFT-->" + elementoAtual.getValor());
             return elementoAtual;
         }
         // Caso nao tenha encontrado, percorra recursivamente.
