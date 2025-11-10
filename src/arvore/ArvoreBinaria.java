@@ -238,7 +238,9 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
                     return noAtual.getValor();
                 }
-            } else if(filhoEsquerdo == null && filhoDireito != null) {
+            }
+            // Verifica se tem apenas um filho a direita
+            else if(filhoEsquerdo == null && filhoDireito != null) {
                 System.out.println("ENTROU AQUI NO FILHO A DIREITA --> " + filhoDireito.getValor());
                 if(elemAnterior != null) {
                     elemAnterior.setFilhoRight(filhoDireito);
@@ -249,7 +251,9 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
                 }
 
                 return noAtual.getValor();
-            } else if(filhoEsquerdo != null && filhoDireito == null) {
+            }
+            // Verifica se tem apenas um filho a esquerda
+            else if(filhoEsquerdo != null && filhoDireito == null) {
                 if(elemAnterior != null) {
                     elemAnterior.setFilhoLeft(filhoEsquerdo);
                 } else {
@@ -258,13 +262,17 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
                     this.raiz.setFilhoLeft(null);
                 }
                 return noAtual.getValor();
-            } else {
+            }
+            // Ele possui 2 filhos
+            else {
 
+                // Encontra sucessor
                 No<T> sucessorInOrder = encontraSucessorInOrder(noAtual.getFilhoRight());
 
-                System.out.println("ENTROU AQUI NO SUCESSOR IN ORDER IRMAO --> " + sucessorInOrder.getValor());
+                // Substitui o valor do nó a ser removido pelo valor do sucessor em ordem.
                 noAtual.setValor(sucessorInOrder.getValor());
 
+                // Remove o No sucessor cujo valor foi copiado para o lugar do no (valor) que foi removido
                 remover(sucessorInOrder.getValor(), noAtual.getFilhoRight());
 
                 return noAtual.getValor();

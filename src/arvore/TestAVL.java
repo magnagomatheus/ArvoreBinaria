@@ -16,6 +16,7 @@ public class TestAVL {
 
         gerador.geraArvoreDegenerada(12,arv);
 
+
         System.out.println(arv.caminharEmNivel());
     }
 }
